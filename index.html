@@ -1,67 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>অভিযোগ কেন্দ্র</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f0f2f5; padding: 20px; }
-        .form-card { background: #fff; max-width: 550px; margin: 0 auto; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 25px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
-        .row { display: flex; gap: 15px; margin-bottom: 15px; }
-        .row div { flex: 1; }
-        button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { background: #1557b0; }
+        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; direction: ltr; }
+        .form-card { background: #fff; max-width: 500px; margin: 0 auto; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-top: 15px; color: #555; }
+        select, input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: #f9f9f9; }
+        select:focus, input:focus { border-color: #3498db; outline: none; background-color: #fff; }
+        button { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 17px; cursor: pointer; transition: 0.3s; margin-top: 25px; font-weight: bold; }
+        button:hover { background: #219150; }
     </style>
 </head>
 <body>
 
 <div class="form-card">
-    <h2>সমস্যা রিপোর্টিং ফর্ম</h2>
+    <h2>সমস্যা জমা দিন</h2>
     
     <form action="YOUR_GOOGLE_FORM_URL" method="POST">
         
-        <div class="input-group">
-            <label>নাম:</label>
-            <input type="text" name="entry.1" placeholder="আপনার পুরো নাম লিখুন" required>
-        </div>
+        <label>আপনার নাম:</label>
+        <input type="text" name="entry.1" placeholder="নাম লিখুন" required>
 
-        <div class="input-group">
-            <label>মোবাইল নম্বর:</label>
-            <input type="tel" name="entry.2" placeholder="০১৭XXXXXXXX" required>
-        </div>
+        <label>উপজেলা নির্বাচন করুন:</label>
+        <select name="entry.2" required>
+            <option value="">উপজেলা বেছে নিন</option>
+            <option value="Upazila1">উপজেলা ১</option>
+            <option value="Upazila2">উপজেলা ২</option>
+            <option value="Upazila3">উপজেলা ৩</option>
+        </select>
 
-        <div class="row">
-            <div>
-                <label>উপজেলা:</label>
-                <input type="text" name="entry.3" placeholder="উপজেলা" required>
-            </div>
-            <div>
-                <label>থানা:</label>
-                <input type="text" name="entry.4" placeholder="থানা" required>
-            </div>
-        </div>
+        <label>থানা নির্বাচন করুন:</label>
+        <select name="entry.3" required>
+            <option value="">থানা বেছে নিন</option>
+            <option value="Thana1">থানা ১</option>
+            <option value="Thana2">থানা ২</option>
+        </select>
 
-        <div class="row">
-            <div>
-                <label>ইউনিয়ন:</label>
-                <input type="text" name="entry.5" placeholder="ইউনিয়ন" required>
-            </div>
-            <div>
-                <label>গ্রাম/পাড়া:</label>
-                <input type="text" name="entry.6" placeholder="গ্রামের নাম" required>
-            </div>
-        </div>
+        <label>ইউনিয়ন নির্বাচন করুন:</label>
+        <select name="entry.4" required>
+            <option value="">ইউনিয়ন বেছে নিন</option>
+            <option value="Union1">ইউনিয়ন ১</option>
+            <option value="Union2">ইউনিয়ন ২</option>
+        </select>
 
-        <div class="input-group">
-            <label>আপনার সমস্যাটি লিখুন:</label>
-            <textarea name="entry.7" rows="4" placeholder="বিস্তারিত এখানে লিখুন..." required></textarea>
-        </div>
+        <label>গ্রাম/পাড়া:</label>
+        <input type="text" name="entry.5" placeholder="গ্রামের নাম লিখুন" required>
 
-        <button type="submit">জমা দিন (Submit)</button>
+        <label>আপনার সমস্যাটি বিস্তারিত লিখুন:</label>
+        <textarea name="entry.6" rows="4" placeholder="এখানে বিস্তারিত লিখুন..." required></textarea>
+
+        <button type="submit">জমা দিন</button>
     </form>
 </div>
 
