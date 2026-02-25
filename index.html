@@ -7,9 +7,10 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f8; padding: 20px; color: #333; }
         .form-card { background: white; max-width: 550px; margin: 0 auto; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; border-bottom: 3px solid #1a73e8; padding-bottom: 10px; margin-bottom: 5px; }
+        h2 { text-align: center; color: #1a73e8; border-bottom: 3px solid #1a73e8; padding-bottom: 10px; margin-bottom: 5px; }
         p.subtitle { text-align: center; font-size: 14px; color: #666; margin-bottom: 25px; }
         label { display: block; font-weight: bold; margin-top: 15px; font-size: 14px; }
+        label span { color: red; } /* Lal taroka mandatory field er jonno */
         select, input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
         select:disabled { background-color: #e9ecef; cursor: not-allowed; }
         button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; margin-top: 25px; font-weight: bold; transition: 0.3s; }
@@ -24,26 +25,29 @@
     
     <form action="YOUR_GOOGLE_FORM_POST_URL" method="POST">
         
-        <label>আপনার নাম:</label>
+        <label>আপনার নাম: <span>*</span></label>
         <input type="text" name="entry.11111" placeholder="নাম লিখুন" required>
 
-        <label>উপজেলা নির্বাচন করুন:</label>
-        <select id="upazila" name="entry.22222" required>
+        <label>মোবাইল নম্বর: <span>*</span></label>
+        <input type="tel" name="entry.22222" placeholder="০১XXXXXXXXX" pattern="[0-9]{11}" title="১১ ডিজিটের মোবাইল নম্বর দিন" required>
+
+        <label>উপজেলা নির্বাচন করুন: <span>*</span></label>
+        <select id="upazila" name="entry.33333" required>
             <option value="">উপজেলা বেছে নিন</option>
         </select>
 
-        <label>ইউনিয়ন নির্বাচন করুন:</label>
-        <select id="union" name="entry.33333" required disabled>
+        <label>ইউনিয়ন নির্বাচন করুন: <span>*</span></label>
+        <select id="union" name="entry.44444" required disabled>
             <option value="">আগে উপজেলা বেছে নিন</option>
         </select>
 
-        <label>গ্রাম/পাড়া নির্বাচন করুন:</label>
-        <select id="village" name="entry.44444" required disabled>
+        <label>গ্রাম/পাড়া নির্বাচন করুন: <span>*</span></label>
+        <select id="village" name="entry.55555" required disabled>
             <option value="">আগে ইউনিয়ন বেছে নিন</option>
         </select>
 
-        <label>আপনার সমস্যার বিবরণ:</label>
-        <textarea name="entry.55555" rows="4" placeholder="আপনার অভিযোগটি এখানে লিখুন..." required></textarea>
+        <label>আপনার সমস্যার বিবরণ: <span>*</span></label>
+        <textarea name="entry.66666" rows="4" placeholder="আপনার অভিযোগটি এখানে লিখুন..." required></textarea>
 
         <button type="submit">জমা দিন</button>
     </form>
@@ -54,17 +58,15 @@
     const unSelect = document.getElementById('union');
     const vilSelect = document.getElementById('village');
 
-    // Fetch data from data.json
+    // data.json theke data load kora
     fetch('data.json')
         .then(res => res.json())
         .then(data => {
-            // 1. Load Upazilas
             data.upazilas.forEach(up => {
                 let opt = new Option(up.bn_name, up.bn_name);
                 upSelect.add(opt);
             });
 
-            // 2. Load Unions on Upazila change
             upSelect.addEventListener('change', function() {
                 unSelect.innerHTML = '<option value="">ইউনিয়ন বেছে নিন</option>';
                 vilSelect.innerHTML = '<option value="">আগে ইউনিয়ন বেছে নিন</option>';
@@ -82,7 +84,6 @@
                 }
             });
 
-            // 3. Load Villages on Union change
             unSelect.addEventListener('change', function() {
                 vilSelect.innerHTML = '<option value="">গ্রাম বেছে নিন</option>';
                 const upData = data.upazilas.find(u => u.bn_name === upSelect.value);
