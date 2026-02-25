@@ -3,59 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অভিযোগ কেন্দ্র</title>
+    <title>অভিযোগ কেন্দ্র - ডাইনামিক ফর্ম</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; direction: ltr; }
-        .form-card { background: #fff; max-width: 500px; margin: 0 auto; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-top: 15px; color: #555; }
-        select, input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: #f9f9f9; }
-        select:focus, input:focus { border-color: #3498db; outline: none; background-color: #fff; }
-        button { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 17px; cursor: pointer; transition: 0.3s; margin-top: 25px; font-weight: bold; }
-        button:hover { background: #219150; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #1a73e8; }
+        label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
+        select, input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #1557b0; }
     </style>
 </head>
 <body>
 
-<div class="form-card">
-    <h2>সমস্যা জমা দিন</h2>
-    
+<div class="container">
+    <h2>আপনার সমস্যাটি জানান</h2>
     <form action="YOUR_GOOGLE_FORM_URL" method="POST">
         
-        <label>আপনার নাম:</label>
+        <label>নাম:</label>
         <input type="text" name="entry.1" placeholder="নাম লিখুন" required>
 
         <label>উপজেলা নির্বাচন করুন:</label>
-        <select name="entry.2" required>
+        <select id="upazila" name="entry.2" required>
             <option value="">উপজেলা বেছে নিন</option>
-            <option value="Upazila1">উপজেলা ১</option>
-            <option value="Upazila2">উপজেলা ২</option>
-            <option value="Upazila3">উপজেলা ৩</option>
-        </select>
-
-        <label>থানা নির্বাচন করুন:</label>
-        <select name="entry.3" required>
-            <option value="">থানা বেছে নিন</option>
-            <option value="Thana1">থানা ১</option>
-            <option value="Thana2">থানা ২</option>
         </select>
 
         <label>ইউনিয়ন নির্বাচন করুন:</label>
-        <select name="entry.4" required>
-            <option value="">ইউনিয়ন বেছে নিন</option>
-            <option value="Union1">ইউনিয়ন ১</option>
-            <option value="Union2">ইউনিয়ন ২</option>
+        <select id="union" name="entry.3" required disabled>
+            <option value="">প্রথমে উপজেলা সিলেক্ট করুন</option>
         </select>
 
-        <label>গ্রাম/পাড়া:</label>
-        <input type="text" name="entry.5" placeholder="গ্রামের নাম লিখুন" required>
+        <label>গ্রাম/পাড়া:</label>
+        <input type="text" name="entry.4" placeholder="গ্রামের নাম লিখুন" required>
 
-        <label>আপনার সমস্যাটি বিস্তারিত লিখুন:</label>
-        <textarea name="entry.6" rows="4" placeholder="এখানে বিস্তারিত লিখুন..." required></textarea>
+        <label>সমস্যার বিবরণ:</label>
+        <textarea name="entry.5" rows="4" placeholder="আপনার সমস্যাটি এখানে লিখুন..." required></textarea>
 
         <button type="submit">জমা দিন</button>
     </form>
 </div>
+
+<script>
+    const upazilaSelect = document.getElementById('upazila');
+    const unionSelect = document.getElementById('union');
+
+    // JSON ফাইল থেকে ডাটা লোড করা
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            // উপজেলার নামগুলো ড্রপডাউনে যোগ করা
+            data.upazilas.forEach(upazila => {
+                let option = document.createElement('option');
+                option.value = upazila.name;
+                option.textContent = upazila.name;
+                upazilaSelect.appendChild(option);
+            });
+
+            // উপজেলা চেঞ্জ হলে ইউনিয়ন আপডেট করা
+            upazilaSelect.addEventListener('change', function() {
+                const selectedUpazila = data.upazilas.find(u => u.name === this.value);
+                
+                unionSelect.innerHTML = '<option value="">ইউনিয়ন বেছে নিন</option>';
+                
+                if (selectedUpazila) {
+                    unionSelect.disabled = false;
+                    selectedUpazila.unions.forEach(union => {
+                        let option = document.createElement('option');
+                        option.value = union;
+                        option.textContent = union;
+                        unionSelect.appendChild(option);
+                    });
+                } else {
+                    unionSelect.disabled = true;
+                }
+            });
+        });
+</script>
 
 </body>
 </html>
